@@ -46,10 +46,10 @@ Les administrateurs ont des privilèges supplémentaires :
 
 ## Utilisation
 
-1. Ouvrez l'application dans votre navigateur.
+1. Ouvrir l'application dans votre navigateur.
 2. Se connecter / S'inscrire
-3. Recevez des indices visuels après chaque tentative.
-4. Une fois le mot deviné ou les tentatives épuisées, la définition du mot sera affichée.
+3. Participer aux discussions
+4. Visualiser son profil
 
 ## Architecture du projet
 
