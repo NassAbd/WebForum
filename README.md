@@ -6,8 +6,8 @@ Le site Organiz’asso permet à des membres d’une association d’échanger d
 
 L’association est pilotée par un conseil d’administration, qui sont des membres élus appelés administrateurs. Il
 a deux forums :
-  - le forum ouvert, que chaque membre inscrit peut consulter et sur lequel il peut poster des messages ;
-  - le forum fermé, réservé aux membres du conseil d’administration.
+- le forum ouvert, que chaque membre inscrit peut consulter et sur lequel il peut poster des messages ;
+- le forum fermé, réservé aux membres du conseil d’administration.
 Hors connexion, un utilisateur n’a que la possibilité de créer un compte. Son inscription doit être validée par
 un administrateur pour lui attribuer le statut de membre.
 Lorsqu’un membre se connecte, cela permet d’ouvrir une page principale qui contient le forum ouvert.
