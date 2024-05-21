@@ -40,9 +40,9 @@ Les administrateurs ont des privilèges supplémentaires :
 
 ## Captures d'écran
 
-![Motus Screenshot](./imageWeb1.png)
-![Motus Screenshot](./imageWeb3.png)
-![Motus Screenshot](./imageWeb4.png)
+![Asso](./imageWeb1.png)
+![Asso](./imageWeb3.png)
+![Asso](./imageWeb4.png)
 
 ## Utilisation
 
