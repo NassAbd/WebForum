@@ -1,4 +1,4 @@
-# Organiz’asso - Jeu de mots en React
+# Organiz’asso - Site Web associatif
 
 Le site Organiz’asso permet à des membres d’une association d’échanger des messages avec des forums.
 
@@ -6,8 +6,8 @@ Le site Organiz’asso permet à des membres d’une association d’échanger d
 
 L’association est pilotée par un conseil d’administration, qui sont des membres élus appelés administrateurs. Il
 a deux forums :
-- le forum ouvert, que chaque membre inscrit peut consulter et sur lequel il peut poster des messages ;
-- le forum fermé, réservé aux membres du conseil d’administration.
+  - le forum ouvert, que chaque membre inscrit peut consulter et sur lequel il peut poster des messages ;
+  - le forum fermé, réservé aux membres du conseil d’administration.
 Hors connexion, un utilisateur n’a que la possibilité de créer un compte. Son inscription doit être validée par
 un administrateur pour lui attribuer le statut de membre.
 Lorsqu’un membre se connecte, cela permet d’ouvrir une page principale qui contient le forum ouvert.
@@ -34,7 +34,7 @@ A la fin de son activité, l’utilisateur a la possibilité de se déconnecter.
 ## Utilisation
 
 1. Ouvrez l'application dans votre navigateur.
-2. Entrez des lettres pour deviner le mot caché.
+2. Se connecter / S'inscrire
 3. Recevez des indices visuels après chaque tentative.
 4. Une fois le mot deviné ou les tentatives épuisées, la définition du mot sera affichée.
 
@@ -46,76 +46,70 @@ A la fin de son activité, l’utilisateur a la possibilité de se déconnecter.
 
 ## Exemple de code
 
-### Composant `Motus`
+### Composant `HomeContainer`
 
 ```javascript
 import React, { useState, useEffect } from 'react';
-import './CSS/Motus.css';
-import Grille from './Grille';
+import ForumList from './ForumList';
+import NewThread from './NewThread';
+import axios from 'axios';
 
-const Motus = ({ mot, updateGame, language }) => {
-  const [isWin, setIsWin] = useState(null);
-  const [definition, setDefinition] = useState('');
 
-  const notifyEnd = (end) => {
-    if (end === 'Win') {
-      setIsWin(true);
-    } else {
-      setIsWin(false);
+// Afficher de la liste des forums publics sur la page d'accueil
+
+const HomeContainer = ({username}) => {
+  // États locaux pour gérer le chargement, les forums et les erreurs
+  const [isLoading, setIsLoading] = useState(false);
+  const [forums, setForums] = useState([]);
+  const [error, setError] = useState('');
+
+// Fonction asynchrone pour charger les forums
+const loadForums = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/forums');
+
+    if (response.status >= 200 && response.status < 300) {
+      // Mettez à jour l'état des forums
+    setForums(response.data.messages);
+    setIsLoading(false);
+    setError('');
+      
     }
+    else{
+      setIsLoading(false);
+      throw new Error('Failed to fetch forums');
+    }
+  } catch (err) {
+    // Gérer les erreurs de la requête
+    setIsLoading(false);
+    setError(err.toString());
   }
+};
 
+
+  // Effectuer la requête initiale lors du montage du composant
   useEffect(() => {
-    if (mot) {
-      fetchDefinition(mot);
-    }
-  }, [mot]);
+    setIsLoading(true);
+    
+    // Chargez les forums
+    loadForums();
+  }, []); // Le tableau de dépendances est vide pour exécuter l'effet une seule fois lors du montage
 
-  const fetchDefinition = async (word) => {
-    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`;
 
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data && data.length > 0) {
-        const definition = data[0].meanings[0].definitions[0].definition;
-        setDefinition(definition);
-      } else {
-        setDefinition('Définition non trouvée.');
-      }
-    } catch (error) {
-      setDefinition('Erreur lors de la récupération de la définition.');
-      console.error('Erreur lors de la récupération de la définition:', error);
-    }
-  };
 
   return (
-    <div className="game-container">
-      <Grille mot={mot} notifyEnd={notifyEnd} />
-      <div>
-        {isWin === true && <p>Félicitations, vous avez gagné!</p>}
-        {isWin === false && <p>Perdu !!! Le mot était "{mot}" Réessayez!</p>}
-        {isWin === null && <p></p>}
-        {isWin !== null && language === 'en' && (
-          <div className="definition">
-            <h2>Définition de {mot}:</h2>
-            <p>{definition}</p>
-          </div>
-        )}
-        {isWin !== null && (
-          <button className='retry-button' onClick={() => updateGame(false)}>Rejouer</button>
-        )}
-      </div>
+    <div className="homeContainer">
+          <NewThread username={username} loadForums={loadForums}/>
+        <ForumList isLoading={isLoading} forums={forums} error={error} admin={false}/>
+
+      
     </div>
+    
   );
 };
 
-export default Motus;
+export default HomeContainer;
 ```
-
-## Remerciements
-- Merci à l'équipe de Dictionary API pour leur API gratuite.
-- Inspiration tirée du jeu télévisé "Motus".
 
 ## License
 
