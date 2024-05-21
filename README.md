@@ -24,8 +24,6 @@ Lorsqu’un membre se connecte, il accède à une page principale contenant le f
   - Contient la liste des messages publiés par le membre.
   - Le membre peut supprimer ses propres messages à partir de son profil.
 - **Visualiser le profil d’autres membres**.
-- **Rechercher des messages** :
-  - En précisant des mots-clés, un intervalle de temps de publication ou l’auteur des messages.
 
 ### Les Administrateurs
 
