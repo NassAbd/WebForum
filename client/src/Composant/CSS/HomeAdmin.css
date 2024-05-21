@@ -1,0 +1,7 @@
+.homeAdminContainer {
+    background-color: #ecf8a9; /* Couleur de fond sombre */
+    color: #fff; /* Couleur du texte clair */
+    padding: 20px; /* Espacement interne */
+    border-radius: 8px; /* Bordures arrondies */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  }

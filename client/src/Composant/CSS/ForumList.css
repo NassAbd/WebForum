@@ -1,0 +1,50 @@
+.home-container {
+    padding: 20px;
+}
+
+.forum-list {
+    display: grid;
+    gap: 20px;
+}
+
+.forum-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.forum-header,
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.date {
+    color: #666;
+}
+
+.subject {
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.content {
+    margin-bottom: 10px;
+}
+
+.reply-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.reply {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+}

@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Couleur de fond générale */
+  }
+  
+  .center-title {
+    text-align: center; /* Centrer le titre */
+  }
+  
+  .menu {
+    background-color: #333; /* Couleur de fond du menu */
+    padding: 10px 0; /* Espacement intérieur du menu */
+  }
+  
+  .center-buttons {
+    text-align: center; /* Centrer les boutons */
+  }
+  
+  .button {
+    background-color: #4caf50; /* Couleur de fond des boutons */
+    color: white; /* Couleur du texte des boutons */
+    padding: 10px 20px; /* Espacement intérieur des boutons */
+    border: none; /* Supprimer la bordure */
+    border-radius: 5px; /* Bordure arrondie */
+    margin: 0 10px; /* Marge entre les boutons */
+    cursor: pointer; /* Curseur de type pointeur au survol */
+  }
+  
+  .button:hover {
+    background-color: #45a049; /* Couleur de fond des boutons au survol */
+  }
+  
+
+  

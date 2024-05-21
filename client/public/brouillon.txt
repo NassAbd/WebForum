@@ -1,0 +1,337 @@
+async function createThreadSave(newThread) {
+    /*const response = await axios.post('../Api/thread.js', newThread);
+    return response.data;*/
+    try {
+        // Envoyer la requête POST avec Axios
+        const response = await axios.post('http://localhost:8000/new-thread', newThread);
+        
+        // Vérifier si la requête a réussi (code de statut 200)
+        if (response.status === 200) {
+            // Extraire les données JSON de la réponse
+            const data = response.data;
+
+            // Vérifier la réponse du serveur
+            if (data.success) {
+                // Si la création du thread est réussie, vous pouvez éventuellement actualiser les données du forum
+                // const updatedForum = await fetchForum(forumSlug);
+                // setThreads(updatedForum.threads);
+            } else {
+                // Afficher un message d'erreur si la connexion a échoué
+                console.error(data.message);
+            }
+        } else {
+            // Gérer les erreurs de requête HTTP
+            console.error('Erreur HTTP:', response.status);
+        }
+    } catch (error) {
+        // Gérer les erreurs
+        console.error('Erreur lors de la connexion:', error);
+    }
+}
+
+// Fonction pour sauvegarder un nouveau thread
+    async function handleCreateThreadSave(newThread) {
+        // Utilisez votre logique de sauvegarde ici
+        await createThreadSave(newThread);
+        // Actualiser la liste des threads après la sauvegarde
+        const updatedForum = await axios.get(`http://localhost:8000/forums/${forumSlug}`);
+        setThreads(updatedForum.threads);
+    }
+
+const ForumList = ({ isLoading, error, forums }) => {
+    if (error || !forums || isLoading || forums.length === 0) {
+        return (
+            <StatusMessage
+                error={error || !forums}
+                errorClassName="home-error"
+                errorMessage={error}
+                loading={isLoading}
+                loadingMessage="We are fetching the homepage for you"
+                nothing={forums && forums.length === 0}
+                nothingMessage="No forum to display"
+                nothingClassName="home-error"
+                type="default"
+            />
+        );
+    }
+
+    const forumCardList = forums.map(forum => {
+        const { name, slug, description, posts_count, threads_count, last_activity } = forum;
+
+        let lastActivityContent = (
+            <div className="home-text home-vertical">
+                — No activity —
+            </div>
+        );
+
+        if (last_activity) {
+            const { thread_id, thread_name, username, avatar, pinned, naturaltime } = last_activity;
+            const truncatedThreadName = thread_name.length > 43 ? `${thread_name.substring(0, 43)}...` : thread_name;
+
+            lastActivityContent = (
+                <div className="home-row">
+                    <Avatar
+                        className="home-avatar"
+                        avatar={avatar}
+                        centered={false}
+                        link={`/user/${username}`}
+                    />
+                    <div className="home-column">
+                        <div>
+                            {pinned ? (
+                                <span className="icon">📌</span>
+                            ) : (
+                                <span className="icon">💬</span>
+                            )}
+                            <Link to={`/thread/${thread_id}`}>{truncatedThreadName}</Link>
+                        </div>
+                        <div className="home-meta">
+                            <Link to={`/user/${username}`}>
+                                <span className="icon">👤</span>
+                                {username}
+                            </Link>
+                            <b>{` — ${naturaltime}`}</b>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="forum-segment" key={slug}>
+                <div className="forum-grid">
+                    <div className="forum-info">
+                        <div>
+                            <span className="icon">📝</span>
+                            <Link to={`/forum/${slug}`}>{name}</Link>
+                        </div>
+                        <div>{description}</div>
+                    </div>
+                    <div className="forum-stats">
+                        <div>
+                            <span className="icon">✍️</span>
+                            {threads_count}
+                            {threads_count > 1 ? ' threads' : ' thread'}
+                        </div>
+                        <div>
+                            <span className="icon">💬</span>
+                            {posts_count}
+                            {posts_count > 1 ? ' posts' : ' post'}
+                        </div>
+                    </div>
+                    <div className="forum-last-activity">{lastActivityContent}</div>
+                </div>
+            </div>
+        );
+    });
+
+    return (
+        <div className="home-container">
+            <div className="forum-list">
+                {forumCardList}
+            </div>
+        </div>
+    );
+};
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import htmlToDraft from 'html-to-draftjs';
+import {
+    EditorState,
+    ContentState,
+    convertFromRaw,
+    convertToRaw,
+    Modifier,
+} from 'draft-js';
+import RichEditor from './RichEditor';
+import StatusMessage from './StatusMessage';
+
+// CODE DE DAVID
+// Interface utilisateur pour créer un nouveau fil de discussion
+
+
+const getSelectedBlock = (editorState) => {
+  const selectionState = editorState.getSelection();
+  const contentState = editorState.getCurrentContent();
+  const blockKey = selectionState.getStartKey();
+  return contentState.getBlockForKey(blockKey);
+};
+
+
+const NewThread = (props) => {
+    const { name: initialName, content: initialContent, forum, createThread, maxLength, toggleShowEditor, updateNewThread, isLoading, id, error, success } = props;
+
+    const [name, setName] = useState(initialName || '');
+    const [editorState, setEditorState] = useState(convertToEditorState(initialContent));
+
+    useEffect(() => {
+        const editorState = convertToEditorState(initialContent);
+        setName(initialName);
+        setEditorState(editorState);
+    }, [initialName, initialContent]);
+
+    function convertToEditorState(content) {
+        let editorState = EditorState.createEmpty();
+        if (content) {
+            try {
+                const contentState = convertFromRaw(JSON.parse(content));
+                editorState = EditorState.createWithContent(contentState);
+            } catch (error) {
+                const contentState = ContentState.createFromText(content);
+                editorState = EditorState.createWithContent(contentState);
+            }
+        }
+        return editorState;
+    }
+
+    const onSave = () => {
+        const content = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        updateNewThread({ name, content });
+        toggleShowEditor();
+    };
+
+    const onCancel = () => {
+        setName('');
+        setEditorState(EditorState.createEmpty());
+        updateNewThread({ name: '', content: JSON.stringify(convertToRaw(EditorState.createEmpty().getCurrentContent())) });
+        toggleShowEditor();
+    };
+
+    const onNameChange = useCallback((e) => {
+        setName(e.target.value);
+    }, []);
+
+    const onEditorStateChange = useCallback((newEditorState) => {
+        setEditorState(newEditorState);
+    }, []);
+
+    const onSubmit = () => {
+        if (name) {
+            const content = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+            const newThread = { name, forum, content };
+            createThread(newThread);
+        }
+    };
+
+    const isValidLength = useCallback((contentState) => {
+        const maxLen = maxLength || 100;
+        return contentState.getPlainText('').length <= maxLen;
+    }, [maxLength]);
+
+    const handleBeforeInput = useCallback(() => {
+        if (!isValidLength(editorState.getCurrentContent())) {
+            return 'handled';
+        }
+    }, [editorState, isValidLength]);
+
+    const handlePastedText = useCallback((text, html, currentEditorState, onChange) => {
+        if (html) {
+            const contentBlock = htmlToDraft(html);
+            let contentState = currentEditorState.getCurrentContent();
+            contentBlock.entityMap.forEach((value, key) => {
+                contentState = contentState.mergeEntityData(key, value);
+            });
+            contentState = Modifier.replaceWithFragment(
+                contentState,
+                currentEditorState.getSelection(),
+                contentBlock.contentBlocks,
+            );
+            if (!isValidLength(contentState)) {
+                return 'handled';
+            }
+            onChange(EditorState.push(currentEditorState, contentState, 'insert-characters'));
+            return true;
+        }
+
+        const selectedBlock = getSelectedBlock(currentEditorState);
+        const newState = Modifier.replaceText(
+            currentEditorState.getCurrentContent(),
+            currentEditorState.getSelection(),
+            text,
+            currentEditorState.getCurrentInlineStyle(),
+        );
+        if (!isValidLength(newState)) {
+            return 'handled';
+        }
+        onChange(EditorState.push(currentEditorState, newState, 'insert-characters'));
+        if (selectedBlock && selectedBlock.type === 'code') {
+            return true;
+        }
+        return false;
+    }, [isValidLength]);
+
+    const statusMessage = (
+        <StatusMessage
+            error={error}
+            errorClassName="newThread-message"
+            errorMessage={error || 'Oops! Something went wrong.'}
+            success={success}
+            successClassName="newThread-message"
+            successMessage={<Link to={`/thread/${id}`}>Successful on creating thread</Link>}
+            type="modal"
+        />
+    );
+
+    return (
+        <div>
+            {statusMessage}
+            <button
+                style={{ padding: '8px', margin: '5px', backgroundColor: 'blue', color: 'white', borderRadius: '4px' }}
+                onClick={toggleShowEditor}
+            >
+                📝 New Thread
+            </button>
+            <div className="newThread-show">
+                <form
+                    style={{ padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        onSubmit();
+                    }}
+                >
+                    <input
+                        required
+                        style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
+                        placeholder="Name"
+                        type="text"
+                        name="name"
+                        value={name}
+                        onChange={onNameChange}
+                    />
+                    <hr style={{ margin: '10px 0' }} />
+                    <RichEditor
+                        placeholder="Start typing your thread content here..."
+                        editorState={editorState}
+                        wrapperClassName="newThread-wrapper"
+                        toolbarClassName="newThread-toolbar"
+                        editorClassName="newThread-editor"
+                        onEditorStateChange={onEditorStateChange}
+                        handleBeforeInput={handleBeforeInput}
+                        handlePastedText={handlePastedText}
+                    />
+                    <button
+                        style={{ padding: '8px', margin: '5px', backgroundColor: 'blue', color: 'white', borderRadius: '4px' }}
+                        onClick={onSubmit}
+                    >
+                        📝 Post thread
+                    </button>
+                    <button
+                        style={{ padding: '8px', margin: '5px', backgroundColor: 'red', color: 'white', borderRadius: '4px' }}
+                        onClick={onSave}
+                    >
+                        💾 Save Draft
+                    </button>
+                    <button
+                        style={{ padding: '8px', margin: '5px', backgroundColor: 'gray', color: 'white', borderRadius: '4px' }}
+                        onClick={onCancel}
+                    >
+                        ❌ Clear
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default NewThread;

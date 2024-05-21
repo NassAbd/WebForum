@@ -1,0 +1,63 @@
+/* Styles généraux du menu utilisateur */
+.userMenu {
+    position: relative; /* Position relative pour positionner les éléments enfants absolument */
+  }
+  
+  /* Styles de l'en-tête du menu utilisateur */
+  .userMenu-header {
+    display: flex; /* Afficher en ligne */
+    align-items: center; /* Aligner les éléments sur l'axe vertical */
+  }
+  
+  /* Styles du nom d'utilisateur */
+  .userMenu-username {
+    cursor: pointer; /* Curseur de type pointeur */
+    color: blue; /* Couleur du texte */
+    border: 1px solid blue; /* Bordure */
+    background: lightblue; /* Fond */
+    padding: 5px 10px; /* Espacement intérieur */
+    margin-right: 10px; /* Marge à droite */
+  }
+  
+  /* Styles du dropdown */
+  .userMenu-dropdown {
+    position: absolute; /* Position absolue */
+    top: 100%; /* Position par rapport au haut du parent */
+    left: 0; /* Alignement à gauche */
+    background: #fff; /* Fond blanc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    border-radius: 5px; /* Bordure arrondie */
+    z-index: 1; /* Assure que le menu est au-dessus de tout autre contenu */
+  }
+  
+  /* Styles des éléments du menu utilisateur */
+  .userMenu-item {
+    padding: 10px; /* Espacement intérieur */
+    cursor: pointer; /* Curseur de type pointeur */
+    border: 1px solid transparent; /* Bordure transparente par défaut */
+  }
+  
+  /* Styles spécifiques aux boutons du menu utilisateur */
+  .userMenu-item button {
+    cursor: pointer; /* Curseur de type pointeur */
+    padding: 5px 10px; /* Espacement intérieur */
+    border: none; /* Supprimer la bordure */
+    border-radius: 5px; /* Bordure arrondie */
+  }
+  
+  /* Styles spécifiques aux couleurs des boutons */
+  .userMenu-item .admin-button {
+    color: black; /* Couleur du texte */
+    background: lightblack; /* Fond */
+  }
+  
+  .userMenu-item .profile-button {
+    color: green; /* Couleur du texte */
+    background: lightgreen; /* Fond */
+  }
+  
+  .userMenu-item .logout-button {
+    color: red; /* Couleur du texte */
+    background: lightred; /* Fond */
+  }
+  

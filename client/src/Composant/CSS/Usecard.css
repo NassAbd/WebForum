@@ -1,0 +1,21 @@
+/* Style de la carte utilisateur */
+.user-card {
+  margin-bottom: 20px;
+}
+
+/* Style de l'en-tête de la carte */
+.user-card-header {
+  display: flex;
+  align-items: center;
+}
+
+/* Style du nom de l'utilisateur */
+.user-card-name {
+  font-weight: bold;
+}
+
+/* Style du statut de staff */
+.user-card-staff {
+  color: red;
+  font-size: 12px;
+}

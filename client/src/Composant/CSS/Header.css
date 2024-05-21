@@ -1,0 +1,45 @@
+/* Styles généraux du conteneur du header */
+.headerContainer {
+    background-color: #333; /* Couleur de fond du header */
+    color: #fff; /* Couleur du texte */
+    padding: 10px; /* Espacement intérieur */
+  }
+  
+  /* Styles spécifiques aux liens de navigation */
+  .navlink {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .navlink ul {
+    list-style: none; /* Supprimer les puces de liste */
+    padding: 0; /* Supprimer les marges intérieures de la liste */
+    margin: 0; /* Supprimer les marges extérieures de la liste */
+  }
+  
+  .navlink ul li {
+    display: inline-block; /* Afficher les éléments de liste en ligne */
+    margin-right: 20px; /* Espacement entre les éléments de liste */
+  }
+  
+  .navlink ul li:last-child {
+    margin-right: 0; /* Supprimer la marge à droite du dernier élément de liste */
+  }
+  
+  /* Styles spécifiques au menu utilisateur */
+  .userMenu {
+    display: flex;
+    align-items: center; /* Aligner les éléments sur l'axe vertical */
+  }
+  
+  .userMenu .avatar {
+    width: 40px; /* Largeur de l'avatar */
+    height: 40px; /* Hauteur de l'avatar */
+    border-radius: 50%; /* Bordure arrondie pour l'avatar */
+    margin-right: 10px; /* Marge à droite de l'avatar */
+  }
+  
+  .userMenu .username {
+    font-weight: bold; /* Texte en gras pour le nom d'utilisateur */
+  }
+  

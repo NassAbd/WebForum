@@ -1,0 +1,114 @@
+/* Style général du conteneur de profil */
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  /* Style des informations de profil */
+  .profileInfo {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style du nom */
+  .name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Style du nom d'utilisateur */
+  .username {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 10px;
+  }
+  
+  /* Style de la date de création du profil */
+  .dateJoined {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 10px;
+  }
+  
+  /* Style de la biographie */
+  .bio {
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  /* Style des boutons pour élever ou retirer le statut d'administrateur */
+  .button {
+    padding: 8px;
+    margin: 5px;
+    background-color: blue;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Style des messages de l'utilisateur */
+  .own-messages {
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  /* Style d'un message de l'utilisateur */
+  .own-message {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style de l'en-tête d'un message */
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Style du nom d'utilisateur dans l'en-tête du message */
+  .message-header .username {
+    font-weight: bold;
+  }
+  
+  /* Style de la date dans l'en-tête du message */
+  .message-header .date {
+    color: #666666;
+  }
+  
+  /* Style du sujet d'un message */
+  .subject {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Style du contenu d'un message */
+  .content {
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  /* Style du bouton de suppression de message */
+  .delete-button {
+    padding: 8px;
+    margin: 5px;
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
